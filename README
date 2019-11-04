@@ -1,3 +1,34 @@
+Download
+
+The latest development source is available directly from the git repository:
+
+git clone --recursive https://github.com/sl424/mupdf
+
+In the mupdf directory, update the third party libraries:
+
+git submodule update --init
+
+Compiling on Windows
+
+On Windows there is a Visual Studio project file in platform/win32/mupdf.vcproj.
+Compiling on Linux
+
+If you are compiling from source you will need several third party libraries: freetype2, jbig2dec, libjpeg, openjpeg, and zlib. These libraries are contained in the source archive. If you are using git, they are included as git submodules.
+
+You will also need the X11 headers and libraries if you're building on Linux. These can typically be found in the xorg-dev package. Alternatively, if you only want the command line tools, you can build with HAVE_X11=no.
+
+The new OpenGL-based viewer also needs OpenGL headers and libraries. If you're building on Linux, install the mesa-common-dev, libgl1-mesa-dev packages, and libglu1-mesa-dev packages. You'll also need several X11 development packages: xorg-dev, libxcursor-dev, libxrandr-dev, and libxinerama-dev. To skip building the OpenGL viewer, build with HAVE_GLUT=no.
+
+To install the viewer, command line tools, libraries, and header files on your system:
+
+make prefix=/usr/local install
+
+To install only the command line tools, libraries, and headers invoke make like this:
+
+make HAVE_X11=no HAVE_GLUT=no prefix=/usr/local install
+
+
+
 ABOUT
 
 MuPDF is a lightweight open source software framework for viewing and converting
