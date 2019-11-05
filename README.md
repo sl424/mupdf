@@ -1,4 +1,12 @@
-##Download
+## pull upstream changes 
+
+	git checkout master
+
+	git pull --rebase upstream master 
+or
+	git fetch upstream && git rebase upstream/master
+
+##  Download
 
 The latest development source is available directly from the git repository:
 
@@ -28,7 +36,7 @@ To install only the command line tools, libraries, and headers invoke make like 
 
 	make HAVE_X11=no HAVE_GLUT=no prefix=/usr/local install
 
-##ABOUT
+##  ABOUT
 
 MuPDF is a lightweight open source software framework for viewing and converting
 PDF, XPS, and E-book documents.
