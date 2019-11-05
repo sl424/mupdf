@@ -1,10 +1,24 @@
 ## pull upstream changes 
 
+Add upstream url from Artifex Software 
+
+	git remote add upstream https://github.com/ArtifexSoftware/mupdf 
+
+Make sure you are on the origin master branch:
+
 	git checkout master
 
+Rebase onto upstream:
+
 	git pull --rebase upstream master 
+
 or
+
 	git fetch upstream && git rebase upstream/master
+
+or merge with upstream:
+
+	git merge upstream/master
 
 ##  Download
 
