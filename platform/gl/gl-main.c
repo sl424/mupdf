@@ -1030,7 +1030,7 @@ static void do_page_selection(void)
 	if (ui_mouse_inside(view_page_area))
 	{
 		ui.hot = &pt;
-		if (!ui.active && ui.right)
+ 		if (!ui.active && ui.down)
 		{
 			ui.active = &pt;
 			pt.x = ui.x;
@@ -1303,6 +1303,51 @@ static void auto_zoom(void)
 		auto_zoom_h();
 }
 
+ static void move_backward(void)
+ {
+ 	int slop_x = page_tex.w / 20;
+ 	int slop_y = page_tex.h / 20;
+ 	if (scroll_y <= slop_y)
+ 	{
+ 			//if (currentpage - 1 >= 0)
+			fz_location prev = fz_previous_page(ctx, doc, currentpage);
+			if (!eqloc(currentpage, prev))
+ 			{
+ 				//scroll_x = page_tex.w;
+ 				scroll_y = page_tex.h;
+ 				//currentpage -= 1;
+ 				currentpage = prev;
+ 			}
+ 	}
+ 	else
+ 	{
+ 		scroll_y -= canvas_h * 25 / 100;
+ 	}
+ }
+ 
+ static void move_forward(void)
+ {
+ 	int slop_x = page_tex.w / 20;
+ 	int slop_y = page_tex.h / 20;
+ 	if (scroll_y + canvas_h >= page_tex.h - slop_y)
+ 	{
+ 			//if (currentpage + 1 < fz_count_pages(ctx, doc))
+			fz_location next = fz_next_page(ctx, doc, currentpage);
+			if (!eqloc(currentpage, next))
+ 			{
+ 				//scroll_x = 0;
+ 				scroll_y = 0;
+ 				//currentpage += 1;
+ 				currentpage = next;
+ 			}
+ 	}
+ 	else
+ 	{
+ 		scroll_y += canvas_h * 25 / 100;
+ 	}
+ }
+
+
 static void smart_move_backward(void)
 {
 	int slop_x = page_tex.w / 20;
@@ -1407,10 +1452,10 @@ static void do_app(void)
 		case '-': set_zoom(zoom_out(currentzoom), ui.x, ui.y); break;
 		case '[': currentrotate -= 90; break;
 		case ']': currentrotate += 90; break;
-		case 'k': case KEY_UP: scroll_y -= 10; break;
-		case 'j': case KEY_DOWN: scroll_y += 10; break;
-		case 'h': case KEY_LEFT: scroll_x -= 10; break;
-		case 'l': case KEY_RIGHT: scroll_x += 10; break;
+ 		case 'k': number = fz_maxi(number, 1); while (number--) move_backward(); break;
+ 		case 'j': number = fz_maxi(number, 1); while (number--) move_forward(); break;
+ 		case 'h': case KEY_LEFT: scroll_x -= 200; break;
+ 		case 'l': case KEY_RIGHT: scroll_x += 200; break;
 
 		case 'b': number = fz_maxi(number, 1); while (number--) smart_move_backward(); break;
 		case ' ': number = fz_maxi(number, 1); while (number--) smart_move_forward(); break;
